@@ -34,16 +34,25 @@ jobs:
         run: |
           echo "Add Sample text file created on git action" > /tmp/sample.txt
           cat /tmp/sample.txt
+      - name: SSH Deploy 
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ec2-3-237-96-182.compute-1.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          port: '22'
+          source: "/tmp/sample.txt"
+          target: "/tmp/"
           
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }} 
-          known_hosts: unnecessary
+#       - name: Install SSH Key
+#         uses: shimataro/ssh-key-action@v2
+#         with:
+#           key: ${{ secrets.SSH_PRIVATE_KEY }} 
+#           known_hosts: unnecessary
           
-      - name: Adding Known Hosts
-        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
+#       - name: Adding Known Hosts
+#         run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
         
-      - name: Deploy with rsync
-        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" /tmp/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp
+#       - name: Deploy with rsync
+#         run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" /tmp/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp
       
