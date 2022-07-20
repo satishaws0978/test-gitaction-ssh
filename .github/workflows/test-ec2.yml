@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-#First we will see the application build or not , then we will deploy in EC2
+#First we will see the application build or not , then we  then will deploy in EC2
   build:
     runs-on: ubuntu-latest
     
@@ -15,7 +15,7 @@ jobs:
     - name: Build the docker_compose
       run: docker-compose up -d --build
       
-    - name: Buid the application
+    - name: Buid the application code
       run: docker-compose exec -T counter_app npm run build
 
   Deploy:
